@@ -54,10 +54,30 @@ namespace Classifier_of_mythical_creatures
                 textBox1.Text = depAtt.Item2;
                 comboBox1.SelectedIndex = IdItemFromText(comboBox1, depAtt.Item3);
                 comboBox2.SelectedIndex = IdItemFromText(comboBox2, depAtt.Item4);
-                textBox2.Text = depAtt.Item5;
+                comboBox3.Text = depAtt.Item5;
+                comboBox2.TextChanged += DropDownValue;
+                comboBox2.DropDownStyleChanged += DropDownValue;
             }
 
 
+        }
+
+        private void DropDownValue(object sender, EventArgs e)
+        {
+            if (comboBox2.Text == "бинарный")
+            {
+                comboBox3.Items.Add("Да");
+                comboBox3.Items.Add("Нет");
+                comboBox3.DropDownStyle = ComboBoxStyle.DropDownList;
+                comboBox3.Enabled = false;
+                comboBox3.SelectedIndex = 0;
+            }
+            if (comboBox2.Text != "бинарный")
+            {
+                comboBox3.Enabled = true;
+                comboBox3.Items.Clear();
+                comboBox3.DropDownStyle = ComboBoxStyle.DropDown;
+            }
         }
 
         private int IdItemFromText(ComboBox comb, string s)
@@ -89,7 +109,7 @@ namespace Classifier_of_mythical_creatures
             string name = textBox1.Text;
             string dep = IdFromText(primeAtt, comboBox1.Text);
             string type = IdFromText(types,comboBox2.Text);
-            string values = textBox2.Text;
+            string values = comboBox3.Text;
             if (name != "" && name != null) { 
                 if (dep != "" && dep != null && name != comboBox1.Text)
                 {
@@ -120,8 +140,17 @@ namespace Classifier_of_mythical_creatures
 
         private void button2_Click(object sender, EventArgs e)
         {
-            if (atType == 0) model.DelPrimeAttributes(id);
-            if (atType == 1) model.DelDependentAttributes(id);
+            if (atType == 0) 
+            { 
+                model.DelPrimeAttributes(id); 
+                model.DelPrimeAttributeToClassByAttId(id);
+                model.DelDependentByPrimeAttributeToClassByAttId(id);
+            }
+            if (atType == 1)
+            {
+                model.DelDependentAttributeToClassByAttId(id);
+                model.DelDependentAttributes(id);
+            }
             Close();
         }
     }

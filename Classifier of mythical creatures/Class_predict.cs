@@ -10,35 +10,34 @@ using System.Windows.Forms;
 
 namespace Classifier_of_mythical_creatures
 {
-    public partial class Class_edit : Form
+    public partial class Class_predict : Form
     {
         
-        int id;
-        private WorkingMode mode;
         Model model;
         List<(string, string)> primeAttNotInClass;
+        List<(string, string)> patt_in_class;
+        List<(string, string, string, string)> dependentAttInClass;
         ComboBox comboBoxNew;
-        public Class_edit(WorkingMode mode_s, int idClass = -1)
+        public Class_predict()
         {
-            mode = mode_s;
-            id = idClass;
+            dependentAttInClass = new List<(string, string, string, string)>();
+            patt_in_class = new List<(string, string)> ();
             List<ComboBox> comboBoxList = new List<ComboBox>();
             model = new Model();
             model.ConnectToDB();
-            InitializeComponent(); 
-            textBox1.Text = model.NameClassFromId(id);
-            InitializeData(id);
+            InitializeComponent();
+            InitializeData();
+            
         }
 
-        private void InitializeData(int id)
+        private void InitializeData()
         {
             panel1.Controls.Clear();
-            List<(string, string)> primaryAtt = model.ReadPrimaryAttributeForClass(id);
             Label labelNew;
             Button buttonNew1;
             Button buttonNew2;
             int position = 0;
-            foreach (var a in primaryAtt)
+            foreach (var a in patt_in_class)
             {
                 labelNew = new Label();
                 buttonNew1 = new Button();
@@ -63,7 +62,7 @@ namespace Classifier_of_mythical_creatures
                 panel1.Controls.Add(buttonNew2);
                 //comboBoxList.Add(comboBoxNew);
             }
-            primeAttNotInClass = model.ReadPrimaryAttributeNotInClass(id);
+            primeAttNotInClass = model.ReadPrimaryAttributeNotInClassByArrow(patt_in_class);
             if (primeAttNotInClass.Count > 0)
             {
                 comboBoxNew = new ComboBox();
@@ -87,38 +86,38 @@ namespace Classifier_of_mythical_creatures
         private void EditDepAttribute(object sender, EventArgs e)
         {
             Button a = sender as Button;
-            Class_dependent_attribute CDA = new Class_dependent_attribute(a.Name, id);
+            Class_predict_dependent_attribute CDA = new Class_predict_dependent_attribute(a.Name, dependentAttInClass);
             CDA.Show();
-
         }
 
         private void DelPrimaryAttToClass(object sender, EventArgs e)
         {
             Button a = sender as Button;
-            model.DelPrimaryAttributeToClass(id, a.Name);
-            model.DelDependentAttributeToClassByPrimary(id, a.Name);
-            InitializeData(id);
+            DelFromListPatt(a.Name);
+            InitializeData();
+        }
+
+        private void DelFromListPatt(string id)
+        {
+            (string, string) del = ("", "");
+            foreach(var a in patt_in_class)
+            {
+                
+                if (a.Item1 == id)
+                {
+                    del = a;
+                }
+                
+            }
+            patt_in_class.Remove(del);
         }
         private void AddPrimaryAttToClass(object sender, EventArgs e)
         {
             if (comboBoxNew.Text != "")
             {
-                model.AddPrimaryAttributeToClass(id, IdFromText(primeAttNotInClass, comboBoxNew.Text));
-                InitializeData(id);
+                patt_in_class.Add((IdFromText(primeAttNotInClass, comboBoxNew.Text), comboBoxNew.Text));
+                InitializeData();
             }
-            
-        }
-
-        private int IdItemFromText(ComboBox comb, string s)
-        {
-            int id = 0;
-            foreach (var a in comb.Items)
-            {
-
-                if (a.ToString() == s) return id;
-                id++;
-            }
-            return -1;
         }
 
         private string IdFromText(List<(string, string)> list, string s)
@@ -133,27 +132,47 @@ namespace Classifier_of_mythical_creatures
             return "";
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void Class_predict_FormClosing(object sender, FormClosingEventArgs e)
         {
-            switch (mode)
-            {
-                case WorkingMode.Add:
-                    break;
-                case WorkingMode.Edit:
-                    model.EditClass(id, textBox1.Text);
-                    Close();
-                    break;
-                case WorkingMode.Del:
-                    break;
-                default:
-                    break;
-            }
+            Application.Exit();
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private void button1_Click(object sender, EventArgs e)
         {
-            model.DelClass(id);
-            Close();
+            List<(string, string)>  da = model.GetDAttClasses();
+            List<(string, string)> pa = model.GetPAttClasses();
+            string class_name = "Неопределен";
+            bool check = true;
+            foreach (var p in pa)
+            {
+                check = true;
+                if (p.Item2.Split(',').ToList().Count != dependentAttInClass.Count)
+                    check = false;
+                foreach (var pr in patt_in_class)
+                {
+                    if (!p.Item2.Split(',').ToList().Contains(pr.Item1))
+                        check = false;
+                }
+                /*if (check)
+                {
+                    foreach (var d in da)
+                    {
+                        
+                        if (d.Item2.Split(',').ToList().Count != dependentAttInClass.Count)
+                            check = false;
+                        foreach (var dep in dependentAttInClass)
+                        {
+                            if (!d.Item2.Split(',').ToList().Contains(dep.Item1))
+                                check = false;
+                        }
+                    }
+                }*/
+                if (check)
+                    class_name = model.GetClassName(p.Item1);
+            }
+            //p.Item2.Split(',').ToList().Count
+            //class_name = model.GetClassName(p.Item1);
+            textBox1.Text = class_name;
         }
     }
 }

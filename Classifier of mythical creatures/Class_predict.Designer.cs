@@ -1,6 +1,6 @@
 ﻿namespace Classifier_of_mythical_creatures
 {
-    partial class Class_edit
+    partial class Class_predict
     {
         /// <summary>
         /// Required designer variable.
@@ -50,6 +50,7 @@
             // 
             // textBox1
             // 
+            this.textBox1.Enabled = false;
             this.textBox1.Location = new System.Drawing.Point(113, 12);
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(141, 20);
@@ -84,24 +85,23 @@
             // button1
             // 
             this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.button1.Location = new System.Drawing.Point(177, 257);
+            this.button1.Location = new System.Drawing.Point(171, 257);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.Size = new System.Drawing.Size(81, 23);
             this.button1.TabIndex = 8;
-            this.button1.Text = "Ок";
+            this.button1.Text = "Определить";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // button2
             // 
             this.button2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.button2.Location = new System.Drawing.Point(8, 257);
+            this.button2.Location = new System.Drawing.Point(12, 257);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(75, 23);
+            this.button2.Size = new System.Drawing.Size(82, 23);
             this.button2.TabIndex = 9;
             this.button2.Text = "Удалить";
             this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // panel1
             // 
@@ -120,7 +120,7 @@
             this.label5.TabIndex = 7;
             this.label5.Text = "Действие";
             // 
-            // Class_edit
+            // Class_predict
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -135,8 +135,9 @@
             this.Controls.Add(this.button1);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label2);
-            this.Name = "Class_edit";
+            this.Name = "Class_predict";
             this.Text = "Class_edit";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Class_predict_FormClosing);
             this.ResumeLayout(false);
             this.PerformLayout();
 

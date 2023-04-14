@@ -65,12 +65,37 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AddClass.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AddClass.Designer.cs">
+      <DependentUpon>AddClass.cs</DependentUpon>
+    </Compile>
     <Compile Include="Attribute_edit.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Attribute_edit.Designer.cs">
       <DependentUpon>Attribute_edit.cs</DependentUpon>
     </Compile>
+    <Compile Include="Class_predict_dependent_attribute.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Class_predict_dependent_attribute.Designer.cs">
+      <DependentUpon>Class_predict_dependent_attribute.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Class_dependent_attribute.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Class_dependent_attribute.Designer.cs">
+      <DependentUpon>Class_dependent_attribute.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Class_predict.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Class_predict.Designer.cs">
+      <DependentUpon>Class_predict.cs</DependentUpon>
+    </Compile>
+    <Compile Include="data.cs" />
     <Compile Include="Class_edit.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -83,17 +108,38 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Main.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Main.Designer.cs">
+      <DependentUpon>Main.cs</DependentUpon>
+    </Compile>
     <Compile Include="Model.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="AddClass.resx">
+      <DependentUpon>AddClass.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Attribute_edit.resx">
       <DependentUpon>Attribute_edit.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Class_predict_dependent_attribute.resx">
+      <DependentUpon>Class_predict_dependent_attribute.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Class_dependent_attribute.resx">
+      <DependentUpon>Class_dependent_attribute.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Class_predict.resx">
+      <DependentUpon>Class_predict.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Class_edit.resx">
       <DependentUpon>Class_edit.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Main.resx">
+      <DependentUpon>Main.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

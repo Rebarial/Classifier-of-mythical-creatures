@@ -19,6 +19,7 @@ namespace Classifier_of_mythical_creatures
         List<(string, string, string)> dependentAtt;
         Label label1;
         List<Label> labelAttList;
+        List<Label> labelClassList;
         Model model;
         public Form1()
         {
@@ -29,13 +30,46 @@ namespace Classifier_of_mythical_creatures
             model.ConnectToDB();
             
             labelAttList = new List<Label>();
+            labelClassList = new List<Label>();
 
 
             tabControl1.SizeMode = TabSizeMode.Fixed;
             tabControl1.ItemSize = new Size((tabControl1.Width / tabControl1.TabPages.Count) - 2, tabControl1.ItemSize.Height);
             updateAtt();
+            updateClass();
             
 
+        }
+
+        private void updateClass()
+        {
+            foreach (var a in labelAttList)
+                this.tabPage1.Controls.Remove(a);
+            int position = 60;
+            primeAtt = model.ReadClasses();
+            foreach (var a in primeAtt)
+            {
+                label1 = new Label();
+                label1.Location = new Point(6, position);
+                position += 30;
+                label1.Name = a.Item1;
+                label1.Width = 230;
+                label1.Text = a.Item2;
+                label1.Visible = true;
+                label1.Click += Class_Click;
+                this.tabPage1.Controls.Add(label1);
+                labelAttList.Add(label1);
+
+            }
+
+        }
+
+        private void Class_Click(object sender, EventArgs e)
+        {
+            Label a = sender as Label;
+            Class_edit classEditForm = new Class_edit(WorkingMode.Edit, int.Parse(a.Name));
+            classEditForm.ShowDialog();
+            updateClass();
         }
 
         private void updateAtt()
@@ -112,8 +146,11 @@ namespace Classifier_of_mythical_creatures
 
         private void buttonAddClass_Click(object sender, EventArgs e)
         {
-            Class_edit CEForm = new Class_edit();
-            CEForm.ShowDialog();
+            AddClass ACForm = new AddClass();
+            
+            ACForm.ShowDialog();
+            updateClass();
+            //Class_edit CEForm = new Class_edit(WorkingMode.Add);
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -121,6 +158,11 @@ namespace Classifier_of_mythical_creatures
             Attribute_edit AEForm = new Attribute_edit();
             AEForm.ShowDialog();
             updateAtt();
+        }
+
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Application.Exit();
         }
     }
 }
